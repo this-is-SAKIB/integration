@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Integration Handbook</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f18;
+    --surface: #141824;
+    --surface2: #1c2235;
+    --border: #2a3250;
+    --gold: #e8c44a;
+    --gold2: #f5d97a;
+    --teal: #4ecdc4;
+    --rose: #ff6b7a;
+    --blue: #7ba7f7;
+    --green: #6bcb77;
+    --text: #e8e4d8;
+    --muted: #8a8fa8;
+    --formula-bg: #0a1020;
+    --step-bg: #111520;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+  }
+
+  .sidebar-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar a:hover {
+    color: var(--gold);
+    border-left-color: var(--gold);
+    background: rgba(232,196,74,0.05);
+    padding-left: 24px;
+  }
+
+  .sidebar .section-num {
+    color: var(--gold);
+    margin-right: 6px;
+    font-size: 11px;
+  }
+
+  /* ── MAIN CONTENT ────────────────────────────── */
+  .main {
+    margin-left: 240px;
+    max-width: 900px;
+    padding: 0 56px 100px;
+  }
+
+  /* ── HERO ────────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(36px, 5vw, 54px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 600px;
+    font-style: italic;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid;
+  }
+
+  .tag.gold  { border-color: var(--gold);  color: var(--gold);  background: rgba(232,196,74,0.08); }
+  .tag.teal  { border-color: var(--teal);  color: var(--teal);  background: rgba(78,205,196,0.08); }
+  .tag.rose  { border-color: var(--rose);  color: var(--rose);  background: rgba(255,107,122,0.08); }
+  .tag.blue  { border-color: var(--blue);  color: var(--blue);  background: rgba(123,167,247,0.08); }
+  .tag.green { border-color: var(--green); color: var(--green); background: rgba(107,203,119,0.08); }
+
+  /* ── SECTION ─────────────────────────────────── */
+  .section {
+    margin-bottom: 80px;
+    padding-top: 20px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    background: rgba(232,196,74,0.1);
+    border: 1px solid rgba(232,196,74,0.3);
+    border-radius: 4px;
+    padding: 4px 10px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .section h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .section h3 {
+    font-size: 19px;
+    color: var(--gold2);
+    font-style: italic;
+    margin: 32px 0 12px;
+  }
+
+  .section p { margin-bottom: 14px; }
+
+  /* ── FORMULA BOX ──────────────────────────────── */
+  .formula-box {
+    background: var(--formula-bg);
+    border: 1px solid var(--gold);
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 22px 28px;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    line-height: 2;
+  }
+
+  .formula-box .formula-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-style: normal;
+  }
+
+  .formula-box .f { color: var(--gold2); font-weight: 600; }
+  .formula-box .note { color: var(--muted); font-size: 13px; font-family: 'EB Garamond', serif; font-style: italic; }
+
+  /* ── EXAMPLE BOX ──────────────────────────────── */
+  .example {
+    background: var(--step-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 24px 0;
+    overflow: hidden;
+  }
+
+  .example-header {
+    background: var(--surface2);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .example-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--teal);
+    text-transform: uppercase;
+  }
+
+  .difficulty {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .easy  { background: rgba(107,203,119,0.15); color: var(--green); border: 1px solid rgba(107,203,119,0.3); }
+  .med   { background: rgba(232,196,74,0.15);  color: var(--gold);  border: 1px solid rgba(232,196,74,0.3);  }
+  .hard  { background: rgba(255,107,122,0.15); color: var(--rose);  border: 1px solid rgba(255,107,122,0.3); }
+
+  .example-question {
+    padding: 16px 20px;
+    font-size: 17px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .example-question strong { color: var(--gold2); }
+
+  .steps { padding: 16px 20px; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(78,205,196,0.15);
+    border: 1px solid rgba(78,205,196,0.4);
+    color: var(--teal);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .step-content { flex: 1; }
+  .step-content .math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14.5px;
+    color: var(--gold2);
+    background: rgba(232,196,74,0.06);
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .answer-box {
+    background: rgba(107,203,119,0.08);
+    border: 1px solid rgba(107,203,119,0.3);
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14.5px;
+    color: var(--green);
+  }
+
+  .answer-box::before {
+    content: '✓ Answer: ';
+    font-size: 12px;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  /* ── RULE GRID ────────────────────────────────── */
+  .rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .rule-card {
+    background: var(--formula-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+
+  .rule-card .rule-name {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .rule-card .rule-formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--gold2);
+  }
+
+  /* ── CALLOUT ──────────────────────────────────── */
+  .callout {
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+
+  .callout.tip   { background: rgba(78,205,196,0.07);  border-left: 3px solid var(--teal); }
+  .callout.warn  { background: rgba(255,107,122,0.07); border-left: 3px solid var(--rose); }
+  .callout.key   { background: rgba(232,196,74,0.07);  border-left: 3px solid var(--gold); }
+
+  .callout-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .callout.tip  .callout-title { color: var(--teal); }
+  .callout.warn .callout-title { color: var(--rose); }
+  .callout.key  .callout-title { color: var(--gold); }
+
+  /* ── TABLE ────────────────────────────────────── */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+
+  .ref-table th {
+    background: var(--surface2);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .ref-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .ref-table td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--teal);
+  }
+
+  .ref-table td:nth-child(2) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--gold2);
+  }
+
+  .ref-table td:last-child {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 15px;
+  }
+
+  .ref-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── LIATE BOX ────────────────────────────────── */
+  .liate {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .liate-item {
+    flex: 1;
+    min-width: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .liate-item .letter {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .liate-item .meaning {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .liate-item .examples {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    margin-top: 6px;
+  }
+
+  /* ── DIVIDER ──────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── SCROLLBAR ────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  /* ── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 0 20px 80px; }
+    .rule-grid { grid-template-columns: 1fr; }
+  }
+
+  em { color: var(--gold2); font-style: italic; }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--teal);
+    background: rgba(78,205,196,0.08);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  ul, ol { padding-left: 24px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; }
+
+  .big-formula {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--gold2);
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--formula-bg);
+    border-radius: 6px;
+    border: 1px solid rgba(232,196,74,0.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<nav class="sidebar">
+  <div class="sidebar-title">Integration Guide</div>
+  <a href="#s0"><span class="section-num">00</span> Golden Rule</a>
+  <a href="#s1"><span class="section-num">01</span> Basic Rules</a>
+  <a href="#s2"><span class="section-num">02</span> Exponents</a>
+  <a href="#s3"><span class="section-num">03</span> Logarithms</a>
+  <a href="#s4"><span class="section-num">04</span> Trigonometry</a>
+  <a href="#s5"><span class="section-num">05</span> U-Substitution</a>
+  <a href="#s6"><span class="section-num">06</span> Integration by Parts</a>
+  <a href="#s7"><span class="section-num">07</span> Partial Fractions</a>
+  <a href="#s8"><span class="section-num">08</span> Completing Square</a>
+  <a href="#s9"><span class="section-num">09</span> Trig Identity Tricks</a>
+  <a href="#s10"><span class="section-num">10</span> Trick Questions</a>
+  <a href="#s11"><span class="section-num">11</span> Quick Reference</a>
+</nav>
+
+<!-- ══════════ MAIN ══════════ -->
+<main class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Mathematics · Calculus · Complete Handbook</div>
+  <h1>The Complete<br><span>Integration</span> Handbook</h1>
+  <p class="hero-sub">Every technique you need — from the absolute basics to trick questions — explained step by step in plain language.</p>
+  <div class="hero-tags">
+    <span class="tag gold">Basic Rules</span>
+    <span class="tag teal">U-Substitution</span>
+    <span class="tag blue">Integration by Parts</span>
+    <span class="tag rose">Partial Fractions</span>
+    <span class="tag green">Trig Tricks</span>
+  </div>
+</div>
+
+
+<!-- ══════════ SECTION 0: THE GOLDEN RULE ══════════ -->
+<section class="section" id="s0">
+  <div class="section-header">
+    <span class="section-number">§ 00</span>
+    <h2>What Integration Actually Means</h2>
+  </div>
+
+  <p>Integration is the <em>reverse of differentiation</em>. If differentiation asks "what is the rate of change?", integration asks "given the rate of change, find the original function."</p>
+
+  <p>The symbol <code>∫ f(x) dx</code> means: <strong>find a function whose derivative is f(x)</strong>.</p>
+
+  <div class="formula-box">
+    <div class="formula-title">The Fundamental Relationship</div>
+    <div class="f">If  d/dx [F(x)] = f(x),  then  ∫ f(x) dx = F(x) + C</div>
+    <div class="note">C is the constant of integration — it appears because the derivative of any constant is 0.</div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">🔑 Always Remember</div>
+    Every indefinite integral has a <strong>+ C</strong> at the end. If you forget it, the answer is wrong, even if everything else is correct.
+  </div>
+
+  <p>The <code>dx</code> at the end tells you <em>which variable</em> you are integrating with respect to. It also plays an essential role in the U-Substitution technique (Section 5).</p>
+</section>
+
+
+<!-- ══════════ SECTION 1: BASIC RULES ══════════ -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <span class="section-number">§ 01</span>
+    <h2>The Basic Rules (Always Apply These First)</h2>
+  </div>
+
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name">Power Rule</div>
+      <div class="rule-formula">∫ xⁿ dx = xⁿ⁺¹ / (n+1) + C<br><small style="color:var(--muted)">n ≠ −1</small></div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name">Constant Rule</div>
+      <div class="rule-formula">∫ k dx = kx + C</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name">Sum / Difference Rule</div>
+      <div class="rule-formula">∫ [f±g] dx = ∫f dx ± ∫g dx</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name">Constant Multiple Rule</div>
+      <div class="rule-formula">∫ k·f(x) dx = k · ∫f(x) dx</div>
+    </div>
+  </div>
+
+  <h3>The Power Rule — Step by Step</h3>
+
+  <p>The pattern is simple: <strong>add 1 to the exponent, then divide by the new exponent.</strong></p>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 1.1</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x⁵ dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Identify the exponent: n = 5</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Add 1 to the exponent: n + 1 = 6
+          <div class="math">x⁵ → x⁶</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Divide by the new exponent (6):
+          <div class="math">x⁶ / 6</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Add + C</div>
+      </div>
+      <div class="answer-box">x⁶/6 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 1.2 — Polynomial</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (3x⁴ − 5x² + 7) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Split using sum/difference rule — integrate each term separately.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply power rule to each term + constant rule to the 7:
+          <div class="math">∫3x⁴ dx  →  3 · x⁵/5  =  3x⁵/5</div>
+          <div class="math">∫5x² dx  →  5 · x³/3  =  5x³/3</div>
+          <div class="math">∫7 dx    →  7x</div>
+        </div>
+      </div>
+      <div class="answer-box">3x⁵/5 − 5x³/3 + 7x + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 1.3 — Negative & Fractional Exponents</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (√x + 1/x²) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Rewrite using exponent notation</strong> — this is the most important first step!
+          <div class="math">√x = x^(1/2)   and   1/x² = x^(-2)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply power rule to x^(1/2): add 1 to get 3/2, divide by 3/2
+          <div class="math">∫ x^(1/2) dx = x^(3/2) / (3/2) = (2/3)x^(3/2)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Apply power rule to x^(-2): add 1 to get -1, divide by -1
+          <div class="math">∫ x^(-2) dx = x^(-1) / (-1) = -x^(-1) = -1/x</div>
+        </div>
+      </div>
+      <div class="answer-box">(2/3)x^(3/2) − 1/x + C</div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 Trick: Rewrite Before Integrating</div>
+    Always convert roots and fractions to exponent form before integrating:<br>
+    <code>∛x = x^(1/3)</code> &nbsp;·&nbsp; <code>1/x³ = x^(-3)</code> &nbsp;·&nbsp; <code>x√x = x · x^(1/2) = x^(3/2)</code>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 2: EXPONENTS ══════════ -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <span class="section-number">§ 02</span>
+    <h2>Exponential Integrals</h2>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Core Formulas</div>
+    <div class="f">∫ eˣ dx  =  eˣ + C</div><br>
+    <div class="f">∫ e^(kx) dx  =  e^(kx) / k + C</div><br>
+    <div class="f">∫ aˣ dx  =  aˣ / ln(a) + C</div>
+    <div class="note">k is any non-zero constant. a is any positive base ≠ 1.</div>
+  </div>
+
+  <p>Why does <code>∫ eˣ dx = eˣ</code>? Because eˣ is the only function that is its own derivative. So reversing that gives the same function.</p>
+
+  <p>Why does <code>∫ e^(kx) dx = e^(kx)/k</code>? Because if you differentiate e^(kx), the chain rule brings down a factor of k. To undo that, we divide by k.</p>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 2.1</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ e^(5x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">This is in the form e^(kx) with k = 5.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Use the formula: divide by k = 5.
+          <div class="math">e^(5x) / 5</div>
+        </div>
+      </div>
+      <div class="answer-box">e^(5x)/5 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 2.2</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 3ˣ dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">This is in the form aˣ with a = 3.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Use the formula: divide by ln(a) = ln(3).
+          <div class="math">3ˣ / ln(3)</div>
+        </div>
+      </div>
+      <div class="answer-box">3ˣ / ln(3) + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 2.3 — Mixed</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (4eˣ − 2e^(3x) + 5ˣ) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Split and integrate each term:</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">∫4eˣ dx  =  4eˣ</div>
+          <div class="math">∫2e^(3x) dx  =  2 · e^(3x)/3  =  (2/3)e^(3x)</div>
+          <div class="math">∫5ˣ dx  =  5ˣ/ln(5)</div>
+        </div>
+      </div>
+      <div class="answer-box">4eˣ − (2/3)e^(3x) + 5ˣ/ln(5) + C</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 3: LOGARITHMS ══════════ -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <span class="section-number">§ 03</span>
+    <h2>Logarithmic Integrals</h2>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Core Formulas</div>
+    <div class="f">∫ (1/x) dx  =  ln|x| + C</div><br>
+    <div class="f">∫ (1/(ax+b)) dx  =  (1/a) · ln|ax+b| + C</div><br>
+    <div class="f">∫ ln(x) dx  =  x·ln(x) − x + C</div>
+    <div class="note">Always use absolute value |x| inside the ln. Why? Because ln only accepts positive numbers, but 1/x can appear for negative x too.</div>
+  </div>
+
+  <p>The formula <code>∫ (1/x) dx = ln|x|</code> is the special case of the power rule that the power rule CANNOT handle (when n = −1, you'd be dividing by zero).</p>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 3.1</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 1/(3x+4) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">This matches the form 1/(ax+b) with a=3, b=4.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Divide by a = 3:
+          <div class="math">(1/3) · ln|3x+4|</div>
+        </div>
+      </div>
+      <div class="answer-box">(1/3)·ln|3x+4| + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 3.2 — Hidden 1/x</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (x² + 3)/x dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Split the fraction first</strong> — divide each term by x:
+          <div class="math">(x²/x) + (3/x)  =  x + 3/x</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Now integrate each term:
+          <div class="math">∫x dx + ∫(3/x) dx  =  x²/2 + 3·ln|x|</div>
+        </div>
+      </div>
+      <div class="answer-box">x²/2 + 3·ln|x| + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 3.3 — Numerator is derivative of denominator (KEY PATTERN)</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (2x)/(x²+5) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Notice:</strong> The derivative of the denominator (x²+5) is 2x, which is exactly the numerator. This is a clue that the answer is a ln!
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Whenever you see <code>∫ f'(x)/f(x) dx</code>, the answer is <code>ln|f(x)| + C</code>.
+          <div class="math">Here f(x) = x²+5 and f'(x) = 2x</div>
+        </div>
+      </div>
+      <div class="answer-box">ln|x²+5| + C</div>
+    </div>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">🔑 Golden Pattern for Fractions</div>
+    If the numerator is the derivative of the denominator (or a multiple of it):
+    <div class="big-formula">∫ f'(x) / f(x) dx = ln|f(x)| + C</div>
+    This pattern appears constantly in trick questions. Always check if the top is the derivative of the bottom!
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 4: TRIGONOMETRY ══════════ -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <span class="section-number">§ 04</span>
+    <h2>Trigonometric Integrals</h2>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>Integral</th><th>Result</th><th>Trick to Remember</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>∫ sin(x) dx</td>
+        <td>−cos(x) + C</td>
+        <td>sin → cos but with a minus sign</td>
+      </tr>
+      <tr>
+        <td>∫ cos(x) dx</td>
+        <td>sin(x) + C</td>
+        <td>cos → sin, positive</td>
+      </tr>
+      <tr>
+        <td>∫ tan(x) dx</td>
+        <td>−ln|cos(x)| + C</td>
+        <td>= ln|sec(x)| + C (same thing)</td>
+      </tr>
+      <tr>
+        <td>∫ sec²(x) dx</td>
+        <td>tan(x) + C</td>
+        <td>Reverse of d/dx[tan] = sec²</td>
+      </tr>
+      <tr>
+        <td>∫ csc²(x) dx</td>
+        <td>−cot(x) + C</td>
+        <td>Reverse of d/dx[cot] = −csc²</td>
+      </tr>
+      <tr>
+        <td>∫ sec(x)tan(x) dx</td>
+        <td>sec(x) + C</td>
+        <td>Reverse of d/dx[sec] = sec·tan</td>
+      </tr>
+      <tr>
+        <td>∫ csc(x)cot(x) dx</td>
+        <td>−csc(x) + C</td>
+        <td>Reverse of d/dx[csc] = −csc·cot</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>With a coefficient inside: divide by it</h3>
+
+  <p>Just like with exponentials, if you have <code>sin(kx)</code> instead of <code>sin(x)</code>, you divide by k:</p>
+
+  <div class="formula-box">
+    <div class="formula-title">Trig with Coefficient</div>
+    <div class="f">∫ sin(kx) dx  =  −cos(kx)/k + C</div><br>
+    <div class="f">∫ cos(kx) dx  =  sin(kx)/k + C</div><br>
+    <div class="f">∫ sec²(kx) dx  =  tan(kx)/k + C</div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 4.1</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ cos(4x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">∫ cos(kx) = sin(kx)/k. Here k = 4.</div>
+      </div>
+      <div class="answer-box">sin(4x)/4 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 4.2 — Why tan(x) = −ln|cos(x)|</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Derive <strong>∫ tan(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Rewrite tan(x) as sin(x)/cos(x).
+          <div class="math">∫ tan(x) dx = ∫ sin(x)/cos(x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Notice: derivative of cos(x) is −sin(x). The numerator is sin(x), which is <em>almost</em> the derivative of the denominator (off by a minus sign).
+          <div class="math">= −∫ [−sin(x)] / cos(x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Use the golden pattern: ∫ f'(x)/f(x) dx = ln|f(x)|. Here f(x) = cos(x) and f'(x) = −sin(x).
+          <div class="math">= −ln|cos(x)|</div>
+        </div>
+      </div>
+      <div class="answer-box">−ln|cos(x)| + C</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 5: U-SUBSTITUTION ══════════ -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <span class="section-number">§ 05</span>
+    <h2>U-Substitution — The Chain Rule in Reverse</h2>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">🔑 The Big Idea</div>
+    When differentiating, the <strong>chain rule</strong> says: derivative of f(g(x)) = f'(g(x)) · g'(x).<br><br>
+    U-substitution reverses this. When you see <strong>a function composed with another function, and the derivative of the inner function is also somewhere in the integral</strong>, you can substitute.
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">The U-Substitution Recipe</div>
+    <div class="f">Step 1: Let u = [inner function]</div>
+    <div class="f">Step 2: Find du/dx → rearrange to get du = (...) dx</div>
+    <div class="f">Step 3: Substitute u and du into the integral (x should disappear)</div>
+    <div class="f">Step 4: Integrate in terms of u</div>
+    <div class="f">Step 5: Replace u back with the original expression in x</div>
+  </div>
+
+  <h3>How to spot when to use U-Sub</h3>
+  <p>Look for a <em>composite function</em> — a function inside another function. Also check if the derivative of the inner function appears elsewhere in the integral (sometimes multiplied by a constant).</p>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 5.1 — Classic U-Sub</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 2x · (x²+1)⁵ dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Identify the inner function: the thing raised to the 5th power is (x²+1). Let u = x²+1.
+          <div class="math">u = x² + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Differentiate u with respect to x, then solve for dx:
+          <div class="math">du/dx = 2x  →  du = 2x dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Substitute into the integral. Notice <code>2x dx</code> appears in our integral — replace it with <code>du</code>:
+          <div class="math">∫ 2x · (x²+1)⁵ dx  =  ∫ u⁵ du</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          Integrate using the power rule:
+          <div class="math">∫ u⁵ du  =  u⁶/6</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          Replace u back:
+          <div class="math">u⁶/6  =  (x²+1)⁶ / 6</div>
+        </div>
+      </div>
+      <div class="answer-box">(x²+1)⁶ / 6 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 5.2 — Adjusting for a Missing Constant</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x · e^(x²) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Inner function of the exponent is x². Let u = x².
+          <div class="math">u = x²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">du/dx = 2x  →  du = 2x dx</div>
+          But we only have <code>x dx</code> in the integral, not <code>2x dx</code>. So we adjust:
+          <div class="math">x dx = du/2</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Substitute:
+          <div class="math">∫ x · e^(x²) dx = ∫ eᵘ · (du/2) = (1/2) ∫ eᵘ du</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="math">(1/2) · eᵘ</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Back-substitute:
+          <div class="math">(1/2) · e^(x²)</div>
+        </div>
+      </div>
+      <div class="answer-box">(1/2)e^(x²) + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 5.3 — U-Sub with Trig</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ sin(x) · cos⁴(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">The inner function is cos(x) (inside the 4th power). Let u = cos(x).
+          <div class="math">u = cos(x)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">du/dx = −sin(x)  →  du = −sin(x) dx  →  sin(x) dx = −du</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Substitute (sin(x) dx becomes −du):
+          <div class="math">∫ sin(x) · cos⁴(x) dx = ∫ u⁴ · (−du) = −∫ u⁴ du</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="math">−u⁵/5</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Back-substitute:
+          <div class="math">−cos⁵(x)/5</div>
+        </div>
+      </div>
+      <div class="answer-box">−cos⁵(x)/5 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 5.4 — U-Sub with Fractions (ln pattern)</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (3x²)/(x³−7) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">The denominator (x³−7) has derivative 3x² which is the numerator! Classic log pattern. Set u = x³−7.
+          <div class="math">u = x³ − 7</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">du = 3x² dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="math">∫ (3x²)/(x³−7) dx = ∫ (1/u) du = ln|u|</div>
+        </div>
+      </div>
+      <div class="answer-box">ln|x³ − 7| + C</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">⚠️ Common Mistake</div>
+    When you multiply or divide to adjust the constant, you can only do this if the missing piece is a <strong>constant</strong>, not a variable. You <em>cannot</em> multiply by x inside and divide by x outside.
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 6: INTEGRATION BY PARTS ══════════ -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <span class="section-number">§ 06</span>
+    <h2>Integration by Parts — The Product Rule in Reverse</h2>
+  </div>
+
+  <div class="callout key">
+    <div class="callout-title">🔑 The Big Idea</div>
+    The product rule for differentiation says: d/dx[u·v] = u·v' + v·u'<br>
+    Rearranging and integrating both sides gives us <strong>Integration by Parts</strong>. Use this when you have a product of two different types of functions.
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Integration by Parts Formula</div>
+    <div class="f">∫ u · dv = u·v − ∫ v · du</div>
+    <div class="note">You choose what to call u and what to call dv. The right choice makes the problem easier. Use LIATE to choose.</div>
+  </div>
+
+  <h3>LIATE — How to Choose u</h3>
+  <p>Choose <code>u</code> from the category that comes first in this list. The other function becomes <code>dv</code>.</p>
+
+  <div class="liate">
+    <div class="liate-item">
+      <span class="letter">L</span>
+      <div class="meaning">Logarithms</div>
+      <div class="examples">ln(x), log(x)</div>
+    </div>
+    <div class="liate-item">
+      <span class="letter">I</span>
+      <div class="meaning">Inverse Trig</div>
+      <div class="examples">arctan, arcsin</div>
+    </div>
+    <div class="liate-item">
+      <span class="letter">A</span>
+      <div class="meaning">Algebraic</div>
+      <div class="examples">x, x², x³</div>
+    </div>
+    <div class="liate-item">
+      <span class="letter">T</span>
+      <div class="meaning">Trigonometric</div>
+      <div class="examples">sin(x), cos(x)</div>
+    </div>
+    <div class="liate-item">
+      <span class="letter">E</span>
+      <div class="meaning">Exponentials</div>
+      <div class="examples">eˣ, 2ˣ</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 6.1 — Classic: x·eˣ</span>
+      <span class="difficulty easy">EASY</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x·eˣ dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          We have x (Algebraic) and eˣ (Exponential). By LIATE, choose A before E, so:
+          <div class="math">u = x      →   du = dx</div>
+          <div class="math">dv = eˣ dx →   v = eˣ</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply the formula ∫ u dv = uv − ∫ v du:
+          <div class="math">= x·eˣ − ∫ eˣ dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Solve the remaining integral:
+          <div class="math">= x·eˣ − eˣ</div>
+        </div>
+      </div>
+      <div class="answer-box">xeˣ − eˣ + C  =  eˣ(x − 1) + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 6.2 — With Logarithm</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x·ln(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          We have ln(x) (Logarithm) and x (Algebraic). By LIATE, L comes before A, so:
+          <div class="math">u = ln(x)   →   du = (1/x) dx</div>
+          <div class="math">dv = x dx   →   v = x²/2</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply the formula:
+          <div class="math">= ln(x)·(x²/2) − ∫ (x²/2)·(1/x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Simplify the remaining integral: (x²/2)·(1/x) = x/2
+          <div class="math">= (x²/2)·ln(x) − ∫ (x/2) dx</div>
+          <div class="math">= (x²/2)·ln(x) − x²/4</div>
+        </div>
+      </div>
+      <div class="answer-box">(x²/2)·ln(x) − x²/4 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 6.3 — Applying Twice (Tabular Method)</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x²·eˣ dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          By LIATE: u = x², dv = eˣ dx. The tabular method is faster when you apply by parts multiple times. Build a table:<br><br>
+          Differentiate the u-column, integrate the dv-column, alternate signs:
+          <div class="math">
+            Signs:  +   Differentiate (u):  x²   |  Integrate (dv): eˣ<br>
+            Signs:  −   Differentiate:      2x   |  Integrate:      eˣ<br>
+            Signs:  +   Differentiate:      2    |  Integrate:      eˣ<br>
+            Signs:  −   Differentiate:      0    |  Integrate:      eˣ  (STOP)
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Multiply diagonally (sign × left term × right term from next row) and add:
+          <div class="math">(+1)·x²·eˣ  +  (−1)·2x·eˣ  +  (+1)·2·eˣ</div>
+        </div>
+      </div>
+      <div class="answer-box">x²eˣ − 2xeˣ + 2eˣ + C  =  eˣ(x² − 2x + 2) + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 6.4 — The Cycling Trick (eˣ·sin/cos)</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ eˣ·sin(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Call the integral I. Apply by parts with u = sin(x), dv = eˣ dx:
+          <div class="math">u = sin(x)  →  du = cos(x) dx</div>
+          <div class="math">dv = eˣ dx  →  v = eˣ</div>
+          <div class="math">I = eˣ·sin(x) − ∫ eˣ·cos(x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Apply by parts AGAIN to ∫ eˣ·cos(x) dx with u = cos(x), dv = eˣ dx:
+          <div class="math">u = cos(x)  →  du = −sin(x) dx</div>
+          <div class="math">dv = eˣ dx  →  v = eˣ</div>
+          <div class="math">∫ eˣ cos(x) dx = eˣ cos(x) − ∫ eˣ·(−sin(x)) dx = eˣcos(x) + ∫eˣsin(x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Substitute back: I = eˣsin(x) − [eˣcos(x) + I]<br>
+          <strong>We got I on both sides! Solve for I:</strong>
+          <div class="math">I = eˣsin(x) − eˣcos(x) − I</div>
+          <div class="math">2I = eˣsin(x) − eˣcos(x)</div>
+          <div class="math">I = eˣ(sin(x) − cos(x)) / 2</div>
+        </div>
+      </div>
+      <div class="answer-box">eˣ(sin(x) − cos(x)) / 2 + C</div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 When to Use Integration by Parts</div>
+    Use it when the integral is a <strong>product of two different types</strong> of functions (polynomial × exponential, polynomial × trig, logarithm × anything). U-sub won't work because neither factor is the derivative of the other.
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 7: PARTIAL FRACTIONS ══════════ -->
+<section class="section" id="s7">
+  <div class="section-header">
+    <span class="section-number">§ 07</span>
+    <h2>Partial Fractions — For Rational Functions</h2>
+  </div>
+
+  <p>When you have a <em>fraction where the denominator factors into linear pieces</em>, you can split it into simpler fractions that are easy to integrate.</p>
+
+  <div class="formula-box">
+    <div class="formula-title">The Setup</div>
+    <div class="f">A/(ax+b) + B/(cx+d)  →  each part integrates as a ln</div>
+    <div class="note">Degree of numerator must be less than denominator. If not, do polynomial long division first.</div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 7.1 — Two Distinct Linear Factors</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 1/(x²−x−2) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Factor the denominator:
+          <div class="math">x²−x−2 = (x−2)(x+1)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Set up the partial fraction decomposition:
+          <div class="math">1/[(x−2)(x+1)] = A/(x−2) + B/(x+1)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Multiply both sides by (x−2)(x+1):
+          <div class="math">1 = A(x+1) + B(x−2)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          Find A and B by plugging in smart values:<br>
+          <strong>Let x = 2:</strong>  1 = A(3) + B(0)  →  A = 1/3<br>
+          <strong>Let x = −1:</strong>  1 = A(0) + B(−3)  →  B = −1/3
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          Substitute back and integrate:
+          <div class="math">∫ [(1/3)/(x−2) + (−1/3)/(x+1)] dx</div>
+          <div class="math">= (1/3)ln|x−2| − (1/3)ln|x+1|</div>
+        </div>
+      </div>
+      <div class="answer-box">(1/3)·ln|x−2| − (1/3)·ln|x+1| + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 7.2 — Repeated Factor</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (x+1)/(x²(x−3)) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The denominator has a <strong>repeated</strong> factor x² (and x−3). When a factor is repeated, include EACH power:
+          <div class="math">(x+1)/(x²(x−3)) = A/x + B/x² + C/(x−3)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Multiply through by x²(x−3):
+          <div class="math">x+1 = Ax(x−3) + B(x−3) + Cx²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Let x=0: 1 = B(−3) → B = −1/3<br>
+          Let x=3: 4 = C(9) → C = 4/9<br>
+          Expand and match x² coefficient for A: 0 = A + C → A = −4/9
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          Integrate each term:
+          <div class="math">∫(−4/9)/x dx + ∫(−1/3)/x² dx + ∫(4/9)/(x−3) dx</div>
+          <div class="math">= (−4/9)ln|x| + (1/3)(1/x) + (4/9)ln|x−3|</div>
+        </div>
+      </div>
+      <div class="answer-box">(−4/9)ln|x| + 1/(3x) + (4/9)ln|x−3| + C</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 8: COMPLETING THE SQUARE ══════════ -->
+<section class="section" id="s8">
+  <div class="section-header">
+    <span class="section-number">§ 08</span>
+    <h2>Completing the Square</h2>
+  </div>
+
+  <p>When you have a quadratic in the denominator that <em>doesn't factor</em>, complete the square to transform it into a recognizable form.</p>
+
+  <div class="formula-box">
+    <div class="formula-title">Two Key Results After Completing the Square</div>
+    <div class="f">∫ 1/(x² + a²) dx  =  (1/a)·arctan(x/a) + C</div><br>
+    <div class="f">∫ 1/√(a²−x²) dx  =  arcsin(x/a) + C</div>
+    <div class="note">These appear constantly in exam trick questions. Memorize them.</div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 8.1 — Complete the Square to Use arctan</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 1/(x²+4x+13) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The denominator doesn't factor nicely. Complete the square:
+          <div class="math">x²+4x+13 = (x²+4x+4) + 9 = (x+2)² + 9 = (x+2)² + 3²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Substitute u = x+2, so du = dx:
+          <div class="math">∫ 1/(u² + 3²) du</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Use the formula with a = 3:
+          <div class="math">(1/3)·arctan(u/3)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Back-substitute u = x+2:</div>
+      </div>
+      <div class="answer-box">(1/3)·arctan((x+2)/3) + C</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 9: TRIG IDENTITY TRICKS ══════════ -->
+<section class="section" id="s9">
+  <div class="section-header">
+    <span class="section-number">§ 09</span>
+    <h2>Trig Identity Tricks — Powers of sin and cos</h2>
+  </div>
+
+  <p>When integrating powers of sin or cos, use these identities to reduce the powers first.</p>
+
+  <div class="formula-box">
+    <div class="formula-title">The Two Essential Power-Reduction Identities</div>
+    <div class="f">sin²(x)  =  (1 − cos(2x)) / 2</div><br>
+    <div class="f">cos²(x)  =  (1 + cos(2x)) / 2</div><br>
+    <div class="f">sin(x)·cos(x)  =  sin(2x) / 2</div>
+    <div class="note">These turn a squared trig function into something you can integrate directly.</div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 9.1 — ∫ sin²(x)</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ sin²(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          You cannot integrate sin²(x) directly. Use the identity:
+          <div class="math">sin²(x) = (1 − cos(2x)) / 2</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">∫ (1 − cos(2x))/2 dx = (1/2)∫ dx − (1/2)∫ cos(2x) dx</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="math">= x/2 − (1/2)·sin(2x)/2  =  x/2 − sin(2x)/4</div>
+        </div>
+      </div>
+      <div class="answer-box">x/2 − sin(2x)/4 + C</div>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example 9.2 — Odd Power of sin</span>
+      <span class="difficulty med">MEDIUM</span>
+    </div>
+    <div class="example-question">Find <strong>∫ sin³(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          For odd powers, peel off one factor and convert the rest using sin²(x) = 1 − cos²(x):
+          <div class="math">sin³(x) = sin²(x)·sin(x) = (1 − cos²(x))·sin(x)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="math">∫ (1 − cos²(x))·sin(x) dx</div>
+          Use U-sub: u = cos(x), du = −sin(x) dx:
+          <div class="math">−∫ (1 − u²) du = −u + u³/3</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Back-substitute:</div>
+      </div>
+      <div class="answer-box">−cos(x) + cos³(x)/3 + C</div>
+    </div>
+  </div>
+
+  <h3>Key Trig Identities to Remember</h3>
+
+  <div class="rule-grid">
+    <div class="rule-card">
+      <div class="rule-name">Pythagorean</div>
+      <div class="rule-formula">sin²(x) + cos²(x) = 1<br>1 + tan²(x) = sec²(x)</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-name">Double Angle</div>
+      <div class="rule-formula">sin(2x) = 2sin(x)cos(x)<br>cos(2x) = cos²(x)−sin²(x)</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 10: TRICK QUESTIONS ══════════ -->
+<section class="section" id="s10">
+  <div class="section-header">
+    <span class="section-number">§ 10</span>
+    <h2>Trick Questions — The Most Common Types</h2>
+  </div>
+
+  <h3>Trick Type 1: Disguised Power Rule (Rewriting the Fraction)</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.1</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (x³ − 2x + 5) / √x dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Rewrite √x = x^(1/2) and divide each term:
+          <div class="math">x³/x^(1/2) = x^(5/2)</div>
+          <div class="math">2x/x^(1/2) = 2x^(1/2)</div>
+          <div class="math">5/x^(1/2) = 5x^(−1/2)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply power rule to each:
+          <div class="math">x^(7/2)/(7/2) − 2x^(3/2)/(3/2) + 5x^(1/2)/(1/2)</div>
+          <div class="math">= (2/7)x^(7/2) − (4/3)x^(3/2) + 10x^(1/2)</div>
+        </div>
+      </div>
+      <div class="answer-box">(2/7)x^(7/2) − (4/3)x^(3/2) + 10√x + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 2: Add and Subtract in Numerator</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.2</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ x/(x+1) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The degree of numerator = degree of denominator. Do a clever rewrite — add and subtract 1 in the numerator:
+          <div class="math">x/(x+1) = [(x+1) − 1]/(x+1) = 1 − 1/(x+1)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Now integrate:
+          <div class="math">∫ [1 − 1/(x+1)] dx = x − ln|x+1|</div>
+        </div>
+      </div>
+      <div class="answer-box">x − ln|x+1| + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 3: Spotting the Derivative of the Denominator</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.3</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ sin(x)·ecos(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The inner function of eᶜᵒˢ⁽ˣ⁾ is cos(x). Its derivative is −sin(x), and we have sin(x) in the integral!
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Let u = cos(x) → du = −sin(x) dx → sin(x) dx = −du
+          <div class="math">∫ eᵘ · (−du) = −eᵘ</div>
+        </div>
+      </div>
+      <div class="answer-box">−e^cos(x) + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 4: Long Division First</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.4</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (x³ + 1)/(x + 1) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The numerator has <em>higher</em> degree than the denominator, so divide first. Factor the numerator:
+          <div class="math">x³ + 1 = (x+1)(x² − x + 1)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Cancel (x+1):
+          <div class="math">(x³+1)/(x+1) = x² − x + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Now integrate normally:
+          <div class="math">∫ (x² − x + 1) dx = x³/3 − x²/2 + x</div>
+        </div>
+      </div>
+      <div class="answer-box">x³/3 − x²/2 + x + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 5: Multiplying by a Clever Form of 1</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.5</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ 1/(1 + eˣ) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Multiply numerator and denominator by e^(−x):
+          <div class="math">1/(1+eˣ) · (e^(−x)/e^(−x)) = e^(−x)/(e^(−x) + 1)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          The numerator is e^(−x), which is almost the derivative of the denominator (e^(−x)+1). d/dx(e^(−x)+1) = −e^(−x). So we're off by a minus sign:
+          <div class="math">∫ e^(−x)/(e^(−x)+1) dx = −ln|e^(−x)+1|</div>
+        </div>
+      </div>
+      <div class="answer-box">−ln(e^(−x) + 1) + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 6: U-Sub Where u Replaces Everything</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.6</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ eˣ/(eˣ + 1) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The numerator eˣ is exactly the derivative of the denominator (eˣ+1).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Let u = eˣ+1 → du = eˣ dx:
+          <div class="math">∫ (1/u) du = ln|u|</div>
+        </div>
+      </div>
+      <div class="answer-box">ln(eˣ + 1) + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 7: Integration by Parts on ln(x) Alone</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.7</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ ln(x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Rewrite as a product: ln(x) · 1. Then apply by parts with u = ln(x), dv = 1 dx:
+          <div class="math">u = ln(x)  →  du = (1/x) dx</div>
+          <div class="math">dv = dx    →  v = x</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Apply the formula:
+          <div class="math">= x·ln(x) − ∫ x · (1/x) dx = x·ln(x) − ∫ 1 dx</div>
+        </div>
+      </div>
+      <div class="answer-box">x·ln(x) − x + C</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 8: Definite Integral with Odd/Even Symmetry</h3>
+
+  <div class="callout key">
+    <div class="callout-title">🔑 Symmetry Shortcuts for Definite Integrals</div>
+    If the limits are symmetric about 0, i.e., from −a to +a:<br><br>
+    • If f(x) is <strong>odd</strong> [f(−x) = −f(x)]: &nbsp; <code>∫₋ₐᵃ f(x) dx = 0</code>  (the two halves cancel)<br>
+    • If f(x) is <strong>even</strong> [f(−x) = f(x)]: &nbsp; <code>∫₋ₐᵃ f(x) dx = 2∫₀ᵃ f(x) dx</code><br><br>
+    Examples of odd functions: x, x³, sin(x), tan(x)<br>
+    Examples of even functions: x², x⁴, cos(x), |x|
+  </div>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.8</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫₋₃³ (x⁵ + 3x³ − 2x) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          Limits are −3 to 3, which is symmetric about 0.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Check: x⁵, x³, x are all odd functions. Sum of odd functions is odd.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          Therefore the integral = 0. No calculation needed!
+        </div>
+      </div>
+      <div class="answer-box">0</div>
+    </div>
+  </div>
+
+  <h3>Trick Type 9: Recognizing eˣ + e^(−x) / eˣ − e^(−x) Patterns</h3>
+
+  <div class="example">
+    <div class="example-header">
+      <span class="example-label">Example T.9</span>
+      <span class="difficulty hard">HARD</span>
+    </div>
+    <div class="example-question">Find <strong>∫ (eˣ − e^(−x))/(eˣ + e^(−x)) dx</strong></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          The numerator is the derivative of the denominator! d/dx(eˣ + e^(−x)) = eˣ − e^(−x). ✓
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          Direct application of f'(x)/f(x) = ln|f(x)|:
+        </div>
+      </div>
+      <div class="answer-box">ln(eˣ + e^(−x)) + C</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ SECTION 11: QUICK REFERENCE ══════════ -->
+<section class="section" id="s11">
+  <div class="section-header">
+    <span class="section-number">§ 11</span>
+    <h2>Quick Reference — All Formulas</h2>
+  </div>
+
+  <h3>Basic Rules</h3>
+  <table class="ref-table">
+    <thead><tr><th>Integral</th><th>Result</th><th>Condition</th></tr></thead>
+    <tbody>
+      <tr><td>∫ xⁿ dx</td><td>xⁿ⁺¹/(n+1) + C</td><td>n ≠ −1</td></tr>
+      <tr><td>∫ k dx</td><td>kx + C</td><td>—</td></tr>
+      <tr><td>∫ 1/x dx</td><td>ln|x| + C</td><td>x ≠ 0</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Exponentials</h3>
+  <table class="ref-table">
+    <thead><tr><th>Integral</th><th>Result</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>∫ eˣ dx</td><td>eˣ + C</td><td>—</td></tr>
+      <tr><td>∫ e^(kx) dx</td><td>e^(kx)/k + C</td><td>k ≠ 0</td></tr>
+      <tr><td>∫ aˣ dx</td><td>aˣ/ln(a) + C</td><td>a > 0, a ≠ 1</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Logarithms</h3>
+  <table class="ref-table">
+    <thead><tr><th>Integral</th><th>Result</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>∫ (1/(ax+b)) dx</td><td>(1/a)·ln|ax+b| + C</td><td>—</td></tr>
+      <tr><td>∫ ln(x) dx</td><td>x·ln(x) − x + C</td><td>By parts</td></tr>
+      <tr><td>∫ f'(x)/f(x) dx</td><td>ln|f(x)| + C</td><td>Golden pattern</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Trigonometry</h3>
+  <table class="ref-table">
+    <thead><tr><th>Integral</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>∫ sin(x) dx</td><td>−cos(x) + C</td></tr>
+      <tr><td>∫ cos(x) dx</td><td>sin(x) + C</td></tr>
+      <tr><td>∫ tan(x) dx</td><td>−ln|cos(x)| + C</td></tr>
+      <tr><td>∫ sec²(x) dx</td><td>tan(x) + C</td></tr>
+      <tr><td>∫ csc²(x) dx</td><td>−cot(x) + C</td></tr>
+      <tr><td>∫ sec(x)tan(x) dx</td><td>sec(x) + C</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Special Forms</h3>
+  <table class="ref-table">
+    <thead><tr><th>Integral</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>∫ 1/(x²+a²) dx</td><td>(1/a)·arctan(x/a) + C</td></tr>
+      <tr><td>∫ 1/√(a²−x²) dx</td><td>arcsin(x/a) + C</td></tr>
+      <tr><td>∫ sin²(x) dx</td><td>x/2 − sin(2x)/4 + C</td></tr>
+      <tr><td>∫ cos²(x) dx</td><td>x/2 + sin(2x)/4 + C</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Decision Tree — Which Technique to Use?</h3>
+
+  <div class="formula-box" style="font-family:'EB Garamond',serif; font-size:15px; line-height:2.2;">
+    <div class="formula-title">Step-by-Step Decision</div>
+    <div style="color:var(--text)">
+      <strong style="color:var(--gold)">1.</strong> Can you integrate directly with a basic formula? → Do it.<br>
+      <strong style="color:var(--gold)">2.</strong> Can you rewrite the expression (split fraction, use exponents)? → Rewrite, then integrate.<br>
+      <strong style="color:var(--gold)">3.</strong> Is the numerator the derivative of the denominator? → Answer is ln|denominator|.<br>
+      <strong style="color:var(--gold)">4.</strong> Is there a composite function where the inner function's derivative also appears? → U-Substitution.<br>
+      <strong style="color:var(--gold)">5.</strong> Is it a product of two different function types (poly × trig, poly × exp, ln × anything)? → Integration by Parts (LIATE).<br>
+      <strong style="color:var(--gold)">6.</strong> Is the denominator a factorable polynomial? → Partial Fractions.<br>
+      <strong style="color:var(--gold)">7.</strong> Is the denominator a quadratic that won't factor? → Complete the Square.<br>
+      <strong style="color:var(--gold)">8.</strong> Are you integrating sin²(x) or cos²(x)? → Use power-reduction identity.<br>
+      <strong style="color:var(--gold)">9.</strong> Is it eˣsin(x) or eˣcos(x) type? → Integration by Parts twice, then solve for I.
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:40px;">
+    <div class="callout-title">💡 Final Advice</div>
+    The secret to integration is <strong>pattern recognition</strong>. The more examples you do, the more patterns you see instantly. Every trick question is just a standard formula in disguise. When stuck: rewrite the expression, look for f'(x)/f(x), or try U-sub with the most complicated part as u.
+  </div>
+
+</section>
+
+</main>
+</body>
+</html>
